@@ -98,8 +98,8 @@ curl -X POST http://localhost:8080/api/flights/search \
 }'
 ```
 
-Anda akan menerima respons seperti ini. Salin nilai search_id untuk digunakan di langkah berikutnya.
-
+## Anda akan menerima respons seperti ini. Salin nilai search_id untuk digunakan di langkah berikutnya.
+``` bash
 {
   "success": true,
   "message": "Search request submitted",
@@ -108,6 +108,7 @@ Anda akan menerima respons seperti ini. Salin nilai search_id untuk digunakan di
     "status": "processing"
   }
 }
+```
 
 ### 2. Menerima Hasil via SSE (GET)
 
@@ -122,10 +123,10 @@ data: {"search_id":"xxxx-xxxx...", "status":"completed", "results":[{"flight_num
 ```
 
 🧠 ## Keputusan Desain & Trade-offs
-# 1. Microservices vs. Monolith: Arsitektur microservice dipilih untuk memisahkan antara bagian yang menghadap klien (main-service) dan bagian yang melakukan pekerjaan berat (provider-service). Ini memungkinkan scaling independen (misalnya, menambah jumlah provider-service tanpa mengubah main-service). Trade-off-nya adalah kompleksitas komunikasi antar-layanan.
+### 1. Microservices vs. Monolith: Arsitektur microservice dipilih untuk memisahkan antara bagian yang menghadap klien (main-service) dan bagian yang melakukan pekerjaan berat (provider-service). Ini memungkinkan scaling independen (misalnya, menambah jumlah provider-service tanpa mengubah main-service). Trade-off-nya adalah kompleksitas komunikasi antar-layanan.
 
-# 2. Redis Streams vs. RabbitMQ/Kafka: Redis Streams dipilih karena ringan, sudah terintegrasi dalam Redis, dan menyediakan fitur consumer group yang kuat untuk sistem worker. Trade-off-nya adalah fitur yang tidak se-powerfull message broker khusus seperti Kafka.
+### 2. Redis Streams vs. RabbitMQ/Kafka: Redis Streams dipilih karena ringan, sudah terintegrasi dalam Redis, dan menyediakan fitur consumer group yang kuat untuk sistem worker. Trade-off-nya adalah fitur yang tidak se-powerfull message broker khusus seperti Kafka.
 
-# 3. SSE vs. WebSockets: SSE dipilih karena kasus penggunaan ini hanya memerlukan komunikasi one way (server ke klien). SSE lebih sederhana, berjalan di atas HTTP standar, dan memiliki fitur koneksi ulang otomatis yang didukung oleh browser. WebSockets akan menjadi overkill karena menyediakan komunikasi dua arah yang tidak diperlukan di sini.
+### 3. SSE vs. WebSockets: SSE dipilih karena kasus penggunaan ini hanya memerlukan komunikasi one way (server ke klien). SSE lebih sederhana, berjalan di atas HTTP standar, dan memiliki fitur koneksi ulang otomatis yang didukung oleh browser. WebSockets akan menjadi overkill karena menyediakan komunikasi dua arah yang tidak diperlukan di sini.
 
 
