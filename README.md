@@ -25,6 +25,8 @@ Sistem ini terdiri dari dua layanan utama yang berkomunikasi secara asinkron mel
 
 
 [Image of a microservice architecture diagram]
+<img width="843" height="626" alt="image" src="https://github.com/user-attachments/assets/d20d2e18-23ea-4362-bbac-0c91dd930bbc" />
+
 
 
 ---
