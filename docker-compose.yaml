@@ -1,0 +1,47 @@
+version: '3.8'
+
+services:
+  redis:
+    image: redis:7-alpine
+    container_name: redis
+    hostname: redis
+    ports:
+      - "6379:6379"
+    networks:
+      - flight-network
+    restart: unless-stopped
+
+
+  main-service:
+    container_name: main-service
+    build:
+      context: ./main-service
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    networks:
+      - flight-network
+    depends_on:
+      - redis
+    environment:
+      - APP_PORT=8080
+      - REDIS_ADDR=redis:6379
+    restart: unless-stopped
+
+
+  provider-service:
+    container_name: provider-service
+    build:
+      context: ./provider-service
+      dockerfile: Dockerfile
+    networks:
+      - flight-network
+    depends_on:
+      - redis
+    environment:
+      - REDIS_ADDR=redis:6379
+    restart: unless-stopped
+
+networks:
+  flight-network:
+    driver: bridge
